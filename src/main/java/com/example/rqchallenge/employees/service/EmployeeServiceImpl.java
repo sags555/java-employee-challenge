@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -78,9 +79,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<String> entity = new HttpEntity<String>(headers);
-		Map<String, String> body = restTemplate.exchange(API_BASE_URL + "/delete/" + id, HttpMethod.DELETE, entity,
+		ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(API_BASE_URL + "/delete/" + id, HttpMethod.DELETE, entity,
 				new ParameterizedTypeReference<Map<String, String>>() {
-				}).getBody();
+				});
+		Map<String, String> body = responseEntity.getBody();
 		return body.get("status");
 	}
 
